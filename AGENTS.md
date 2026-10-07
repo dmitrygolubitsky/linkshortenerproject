@@ -1,3 +1,11 @@
+ALWAYS read the relevant .md file first BEFORE making code changes. This is mandatory and takes priority over everything else:
+
+It is incredibly important to ALWAYS read the relevant individual instruction files in the [docs/](./docs) directory BEFORE generating ANY code.
+
+Auth rules: read [docs/clerk-auth.md](./docs/clerk-auth.md) before changing anything related to authentication, protected routes, or sign-in/sign-up UX.
+UI rules: read [docs/shadcn-ui.md](./docs/shadcn-ui.md) before changing any user-facing UI. All UI elements in this app must use shadcn/ui components; do not introduce custom UI components.
+
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
