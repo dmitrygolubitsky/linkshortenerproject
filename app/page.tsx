@@ -49,12 +49,6 @@ export default async function Home() {
           <span className="text-base font-semibold tracking-tight">snip</span>
         </a>
         <nav aria-label="Main navigation" className="flex items-center gap-3">
-          <a
-            href="#features"
-            className="hidden px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
-          >
-            Features
-          </a>
           <SignInButton mode="modal">
             <Button variant="ghost">Sign in</Button>
           </SignInButton>
