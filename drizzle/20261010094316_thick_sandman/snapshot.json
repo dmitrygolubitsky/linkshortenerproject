@@ -1,0 +1,99 @@
+{
+  "version": "8",
+  "dialect": "postgres",
+  "id": "408be940-6d65-4a93-b391-9a7356f346a7",
+  "prevIds": [
+    "f0ee3fdb-f51d-4325-8186-c73f0cce2c04"
+  ],
+  "ddl": [
+    {
+      "isRlsEnabled": false,
+      "name": "links",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "byDefault",
+        "name": "links_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "links"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "short_code",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "links"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "original_url",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "links"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "links"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "links_pkey",
+      "schema": "public",
+      "table": "links",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "short_code"
+      ],
+      "nullsNotDistinct": false,
+      "name": "links_short_code_key",
+      "schema": "public",
+      "table": "links",
+      "entityType": "uniques"
+    }
+  ],
+  "renames": []
+}
