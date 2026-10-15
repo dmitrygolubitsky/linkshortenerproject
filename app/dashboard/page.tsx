@@ -3,6 +3,7 @@ import { UserButton } from "@clerk/nextjs";
 import { ExternalLink, Link2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { getLinks } from "@/data/links";
+import { CreateLinkDialog } from "./create-link-dialog/create-link-dialog";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -36,9 +37,12 @@ export default async function DashboardPage() {
                 Your links
               </h1>
             </div>
-            <p className="text-sm text-muted-foreground">
-              {links.length} {links.length === 1 ? "link" : "links"}
-            </p>
+            <div className="flex items-center gap-4">
+              <p className="text-sm text-muted-foreground">
+                {links.length} {links.length === 1 ? "link" : "links"}
+              </p>
+              <CreateLinkDialog />
+            </div>
           </div>
 
           {links.length > 0 ? (
