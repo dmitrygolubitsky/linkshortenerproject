@@ -1,3 +1,7 @@
+---
+description: Read this before implementing or modifying authentication in this project.
+---
+
 # Clerk Auth Rules
 
 Use Clerk for all authentication in this app. Do not add or reintroduce any other auth provider, session system, or custom login flow.

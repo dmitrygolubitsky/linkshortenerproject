@@ -1,3 +1,7 @@
+---
+description: Read this before creating or modifying any user-facing UI components in this project.
+---
+
 # shadcn UI Standards
 
 ## Scope
