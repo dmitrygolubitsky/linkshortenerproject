@@ -4,6 +4,8 @@ import { ExternalLink, Link2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { getLinks } from "@/data/links";
 import { CreateLinkDialog } from "./create-link-dialog/create-link-dialog";
+import { DeleteLinkDialog } from "./delete-link-dialog/delete-link-dialog";
+import { EditLinkDialog } from "./edit-link-dialog/edit-link-dialog";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -64,12 +66,20 @@ export default async function DashboardPage() {
                       <ExternalLink className="size-3.5 shrink-0" aria-hidden="true" />
                     </a>
                   </div>
-                  <time
-                    dateTime={link.createdAt.toISOString()}
-                    className="text-xs text-muted-foreground"
-                  >
-                    Created {link.createdAt.toLocaleDateString()}
-                  </time>
+                  <div className="flex items-center gap-2">
+                    <time
+                      dateTime={link.createdAt.toISOString()}
+                      className="mr-2 text-xs text-muted-foreground"
+                    >
+                      Created {link.createdAt.toLocaleDateString()}
+                    </time>
+                    <EditLinkDialog
+                      id={link.id}
+                      originalUrl={link.originalUrl}
+                      shortCode={link.shortCode}
+                    />
+                    <DeleteLinkDialog id={link.id} shortCode={link.shortCode} />
+                  </div>
                 </li>
               ))}
             </ul>
