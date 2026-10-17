@@ -3,6 +3,7 @@ import { UserButton } from "@clerk/nextjs";
 import { ExternalLink, Link2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { getLinks } from "@/data/links";
+import { CopyLinkButton } from "./copy-link-button/copy-link-button";
 import { CreateLinkDialog } from "./create-link-dialog/create-link-dialog";
 import { DeleteLinkDialog } from "./delete-link-dialog/delete-link-dialog";
 import { EditLinkDialog } from "./edit-link-dialog/edit-link-dialog";
@@ -52,8 +53,8 @@ export default async function DashboardPage() {
               {links.map((link) => (
                 <li key={link.id} className="grid gap-3 py-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
                   <div className="min-w-0">
-                    <p className="flex items-center gap-2 text-sm font-semibold">
-                      <Link2 className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                    <p className="flex items-center gap-1 text-sm font-semibold">
+                      <CopyLinkButton shortCode={link.shortCode} />
                       <span className="truncate">{link.shortCode}</span>
                     </p>
                     <a
