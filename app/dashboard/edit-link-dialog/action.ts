@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { shortCodeExists, updateLink } from "@/data/links";
+import { isUniqueViolation, updateLink } from "@/data/links";
 
 const schema = z.object({
   id: z.number().int().positive(),
@@ -44,14 +44,14 @@ export async function editLink(input: EditLinkInput): Promise<EditLinkResult> {
   const { id, url, shortCode } = parsed.data;
 
   try {
-    if (await shortCodeExists(shortCode, id)) {
-      return { error: "That short code is already taken" };
-    }
-    const link = await updateLink(id, { shortCode, originalUrl: url });
+    const link = await updateLink(id, userId, { shortCode, originalUrl: url });
     if (!link) return { error: "Link not found" };
     revalidatePath("/dashboard");
     return { success: true };
-  } catch {
+  } catch (error) {
+    if (isUniqueViolation(error)) {
+      return { error: "That short code is already taken" };
+    }
     return { error: "Could not update the link. Please try again." };
   }
 }

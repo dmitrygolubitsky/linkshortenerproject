@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
 import { ExternalLink, Link2 } from "lucide-react";
 import { redirect } from "next/navigation";
-import { getLinks } from "@/data/links";
+import { getLinksByUser } from "@/data/links";
 import { CopyLinkButton } from "./copy-link-button/copy-link-button";
 import { CreateLinkDialog } from "./create-link-dialog/create-link-dialog";
 import { DeleteLinkDialog } from "./delete-link-dialog/delete-link-dialog";
@@ -15,7 +15,7 @@ export default async function DashboardPage() {
     redirect("/sign-in");
   }
 
-  const links = await getLinks();
+  const links = await getLinksByUser(userId);
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">

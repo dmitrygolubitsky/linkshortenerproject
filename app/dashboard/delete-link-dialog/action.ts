@@ -19,7 +19,7 @@ export async function deleteLink(input: DeleteLinkInput): Promise<DeleteLinkResu
   if (!parsed.success) return { error: "Invalid input" };
 
   try {
-    const link = await removeLink(parsed.data.id);
+    const link = await removeLink(parsed.data.id, userId);
     if (!link) return { error: "Link not found" };
     revalidatePath("/dashboard");
     return { success: true };

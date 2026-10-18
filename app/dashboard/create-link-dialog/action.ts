@@ -1,10 +1,11 @@
 "use server";
 
 import { randomBytes } from "node:crypto";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { insertLink, shortCodeExists } from "@/data/links";
+import { insertLink, isUniqueViolation } from "@/data/links";
+import { ensureUser } from "@/data/users";
 
 const schema = z.object({
   url: z
@@ -36,7 +37,7 @@ type CreateLinkResult = { success: true } | { error: string };
 const MAX_ATTEMPTS = 5;
 
 function generateShortCode() {
-  return randomBytes(6).toString("base64url").slice(0, 7);
+  return randomBytes(8).toString("base64url");
 }
 
 export async function createLink(input: CreateLinkInput): Promise<CreateLinkResult> {
@@ -50,27 +51,36 @@ export async function createLink(input: CreateLinkInput): Promise<CreateLinkResu
 
   const { url, shortCode } = parsed.data;
 
+  try {
+    const user = await currentUser();
+    const email = user?.primaryEmailAddress?.emailAddress;
+    if (!email) return { error: "Your account has no email address" };
+    await ensureUser({ id: userId, email });
+  } catch {
+    return { error: "Could not create the link. Please try again." };
+  }
+
   if (shortCode) {
     try {
-      if (await shortCodeExists(shortCode)) {
-        return { error: "That short code is already taken" };
-      }
-      await insertLink({ shortCode, originalUrl: url });
+      await insertLink({ userId, shortCode, originalUrl: url });
       revalidatePath("/dashboard");
       return { success: true };
-    } catch {
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        return { error: "That short code is already taken" };
+      }
       return { error: "Could not create the link. Please try again." };
     }
   }
 
-  // Retry on the unlikely short code collision (unique constraint).
+  // Retry on the unlikely generated short code collision (unique constraint).
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     try {
-      await insertLink({ shortCode: generateShortCode(), originalUrl: url });
+      await insertLink({ userId, shortCode: generateShortCode(), originalUrl: url });
       revalidatePath("/dashboard");
       return { success: true };
-    } catch {
-      if (attempt === MAX_ATTEMPTS - 1) {
+    } catch (error) {
+      if (!isUniqueViolation(error)) {
         return { error: "Could not create the link. Please try again." };
       }
     }
